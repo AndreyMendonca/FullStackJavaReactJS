@@ -1,7 +1,14 @@
 package com.fullstack.backendapi.infra.repository;
 
 import com.fullstack.backendapi.domain.entity.Image;
+import com.fullstack.backendapi.domain.enums.ImageExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ImageRepository extends JpaRepository<Image, String> {
+import java.util.List;
+
+public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecificationExecutor<Image> {
+    default List<Image> findByExtensionAndNameOrTagsLike(ImageExtension extension, String query){
+        return findAll();
+    }
 }
