@@ -7,7 +7,7 @@ export const Template = ({children}: Props) =>{
         <>
             <div className="min-h-screen flex flex-col">
                 <Header/>
-                <div className="flex-grow container mx-auto mt-8 px-4">
+                <div className="flex-grow container mx-auto mt-2 px-4">
                     {children}
                 </div>
 
