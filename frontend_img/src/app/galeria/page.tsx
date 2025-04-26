@@ -3,21 +3,29 @@ import { Template } from "@/components";
 import { ImageCard } from "@/components/ImageCard";
 import { Image } from "@/resources/image/image.resource";
 import { useImageService } from "@/resources/image/image.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Page = () =>{
     const useService = useImageService();
     const [images, setImages] = useState<Image[]>([]);
     const [query, setQuery] = useState('');
     const [extension, setExtension] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const searchImage = async () => {
+        setLoading(true)
         const result = await useService.buscar(query, extension);
         setImages(result);
+        setLoading(false);
     }
 
+    useEffect(()=>{
+        searchImage();
+        setLoading(false);
+    },[])
+
     return (
-        <Template>
+        <Template loading={loading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <div className="flex space-x-4 w-full max-w-4xl items-center justify-center">
                     <input 
@@ -35,8 +43,8 @@ const Page = () =>{
                         <option value="JPEG">JPEG</option>
                         <option value="GIF">GIF</option>
                     </select>
-                    <button onClick={searchImage} className="bg-blue-500 text-white px-4 py-2 rounded-xl cursor-pointer">Pesquisar</button>
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-xl cursor-pointer">Add foto</button>
+                    <button onClick={searchImage} className="bg-blue-500 text-white px-4 py-2 rounded-xl cursor-pointer hover:bg-blue-400">Pesquisar</button>
+                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-xl cursor-pointer hover:bg-yellow-400">Add foto</button>
                 </div>
             </section>
 
@@ -49,6 +57,7 @@ const Page = () =>{
                             nome={img.name}
                             tamanho={img.size}
                             dataUpload={img.uploadDate}
+                            extension={img.extension}
                        />
                     ))
                 }
