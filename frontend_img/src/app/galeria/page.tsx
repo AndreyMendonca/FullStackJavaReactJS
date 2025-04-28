@@ -4,6 +4,9 @@ import { ImageCard } from "@/components/ImageCard";
 import { Image } from "@/resources/image/image.resource";
 import { useImageService } from "@/resources/image/image.service";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/Button";
+import { InputText } from "@/components/InputText";
 
 const Page = () =>{
     const useService = useImageService();
@@ -28,23 +31,25 @@ const Page = () =>{
         <Template loading={loading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <div className="flex space-x-4 w-full max-w-4xl items-center justify-center">
-                    <input 
-                        type="text" 
-                        name={query}
+                    <InputText 
+                        type="text"
                         onChange={e => setQuery(e.target.value)}
-                        className="flex-1 border px-5 py-2 rounded-lg text-gray-500 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500" 
+                        placeholder="Digite o nome ou tags para buscar"
                     />
 
                     <select 
-                        onChange={e => setExtension(e.target.value)} className="border border-gray-300 px-5 py-2 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                        onChange={e => setExtension(e.target.value)} className="border border-gray-300 px-5 py-2 rounded-lg text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
                     >
                         <option value="">TODOS</option>
                         <option value="PNG">PNG</option>
                         <option value="JPEG">JPEG</option>
                         <option value="GIF">GIF</option>
                     </select>
-                    <button onClick={searchImage} className="bg-blue-500 text-white px-4 py-2 rounded-xl cursor-pointer hover:bg-blue-400">Pesquisar</button>
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-xl cursor-pointer hover:bg-yellow-400">Add foto</button>
+                    <Button label="Pesquisar" onClick={searchImage} color="blue"></Button>
+                    <Link href="/formulario">
+                        <Button label="Add foto" color="yellow"></Button>
+                    </Link>
+
                 </div>
             </section>
 
