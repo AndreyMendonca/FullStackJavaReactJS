@@ -30,10 +30,11 @@ const Page = () =>{
     return (
         <Template loading={loading}>
             <section className="flex flex-col items-center justify-center my-5">
-                <div className="flex space-x-4 w-full max-w-4xl items-center justify-center">
+                <div className="flex-row md:flex space-x-4 w-full max-w-4xl items-center justify-center">
                     <InputText 
                         type="text"
                         onChange={e => setQuery(e.target.value)}
+                        style="md:flex-1 w-[50%]"
                         placeholder="Digite o nome ou tags para buscar"
                     />
 
@@ -45,15 +46,16 @@ const Page = () =>{
                         <option value="JPEG">JPEG</option>
                         <option value="GIF">GIF</option>
                     </select>
-                    <Button label="Pesquisar" onClick={searchImage} color="blue"></Button>
-                    <Link href="/formulario">
-                        <Button label="Add foto" color="yellow"></Button>
-                    </Link>
-
+                    <div className="flex items-center justify-center space-x-4 mt-2 md:mt-0">
+                        <Button label="Pesquisar" onClick={searchImage} color="blue"></Button>
+                        <Link href="/formulario">
+                            <Button label="Add foto" color="yellow"></Button>
+                        </Link>
+                    </div>
                 </div>
             </section>
 
-            <section className="grid grid-cols-3 gap-8">
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {
                     images.map((img, index) =>(
                        <ImageCard 

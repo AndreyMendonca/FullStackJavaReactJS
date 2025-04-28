@@ -10,7 +10,7 @@ export const InputText = ({type, style, onChange, ...outrasProps}: Props) =>{
             type={type}
             {...outrasProps}
             onChange={onChange}
-            className={`${style} flex-1 border px-5 py-2 rounded-lg text-gray-500 border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500`}
+            className={`${style} border px-5 py-2 rounded-lg text-gray-500 border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500`}
         />
     )
 }
