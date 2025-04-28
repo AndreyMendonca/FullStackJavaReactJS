@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { InputText } from "@/components/InputText";
 
+
 const Page = () =>{
     const useService = useImageService();
     const [images, setImages] = useState<Image[]>([]);
@@ -47,9 +48,9 @@ const Page = () =>{
                         <option value="GIF">GIF</option>
                     </select>
                     <div className="flex items-center justify-center space-x-4 mt-2 md:mt-0">
-                        <Button label="Pesquisar" onClick={searchImage} color="blue"></Button>
+                        <Button label="Pesquisar" onClick={searchImage} color="bg-blue-500 hover:bg-blue-400"></Button>
                         <Link href="/formulario">
-                            <Button label="Add foto" color="yellow"></Button>
+                            <Button label="Add foto" color="bg-yellow-500 hover:bg-yellow-400" ></Button>
                         </Link>
                     </div>
                 </div>

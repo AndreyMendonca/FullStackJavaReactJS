@@ -10,7 +10,7 @@ export const Button = ({color, label, onClick, type}: Props) =>{
         <>
             <button 
                 onClick={onClick} 
-                className={`bg-${color}-500 text-white px-4 py-2 rounded-xl cursor-pointer hover:bg-${color}-400`}
+                className={`${color} text-white px-4 py-2 rounded-xl cursor-pointer`}
                 type={type}>
                     {label}
             </button>

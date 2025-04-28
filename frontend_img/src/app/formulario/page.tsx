@@ -1,23 +1,37 @@
 'use client'
-
 import { Template } from "@/components";
 import { Button } from "@/components/Button";
 import { InputText } from "@/components/InputText";
 import Link from "next/link";
+import { useFormik } from "formik";
+
+type FormProps = {
+    name: string;
+    tags: string;
+    file: any;
+}
+
+const formScheme: FormProps = {name: '', tags:'',file:''}
 
 const Page = () =>{
+    const formik = useFormik<FormProps>({
+        initialValues: formScheme,
+        onSubmit: (dados:FormProps) =>{
+            console.log(dados)
+        }
+    })
     return (
         <Template>
             <section className="flex flex-col items-center justify-center my-5">
                 <h2 className="mt-3 mb-10 text-3xl font-extrabold tracking-tight text-gray-900">Nova imagem</h2>
-                <form className="w-full max-w-2xl">
+                <form onSubmit={formik.handleSubmit} className="w-full max-w-2xl">
                     <div className="grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Nome: *</label>
-                        <InputText type="text" style="" placeholder="Nome da imagem"/>
+                        <InputText id="name" onChange={formik.handleChange} type="text" style="" placeholder="Nome da imagem"/>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Tags: *</label>
-                        <InputText type="text" style="" placeholder="Digite separado por virgulas"/>
+                        <InputText id="tags" onChange={formik.handleChange} type="text" style="" placeholder="Digite separado por virgulas"/>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Image: *</label>
@@ -36,9 +50,9 @@ const Page = () =>{
                         </div>
                     </div>
                     <div className="mt-6 flex items-center justify-end gap-x-6 md:justify-start">
-                        <Button label="Salvar" color="blue" type="submit"/>
+                        <Button label="Salvar" color="bg-blue-500 hover:bg-blue-400" type="submit"/>
                         <Link href="/galeria">
-                            <Button label="Cancelar" color="yellow"/>
+                            <Button label="Cancelar" color="bg-red-500 hover:bg-red-400"/>
                         </Link>
 
                     </div>

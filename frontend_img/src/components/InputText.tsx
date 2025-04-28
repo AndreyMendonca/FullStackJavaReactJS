@@ -1,4 +1,5 @@
 type Props = {
+    id?: string;
     type: string, 
     style?: string,
     onChange?: (event:React.ChangeEvent<HTMLInputElement>) => void;
