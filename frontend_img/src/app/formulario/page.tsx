@@ -1,11 +1,13 @@
 'use client'
-import { Template } from "@/components";
+import { Template } from "@/components/Template";
 import { Button } from "@/components/Button";
 import { InputText } from "@/components/InputText";
 import Link from "next/link";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useImageService } from "@/resources/image/image.service";
+import { ToastContainer, toast } from 'react-toastify';
+import { useNotification } from "@/components/notification";
 
 type FormProps = {
     name: string;
@@ -18,7 +20,7 @@ const formScheme: FormProps = {name: '', tags:'',file:''}
 const Page = () =>{
     const [imagePreview, setImagePreview] = useState<string>();
     const service = useImageService();
-
+    const notification = useNotification();
     const formik = useFormik<FormProps>({
         initialValues: formScheme,
         onSubmit: handleSubmit
@@ -31,6 +33,7 @@ const Page = () =>{
         formData.append("tags", dados.tags);
 
         await service.salvar(formData);
+        notification.notify("Imagem salva com sucesso", "success")
         formik.resetForm();
         setImagePreview('');
     }
@@ -53,11 +56,11 @@ const Page = () =>{
                 <form onSubmit={formik.handleSubmit} className="w-full max-w-2xl">
                     <div className="grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Nome: *</label>
-                        <InputText id="name" onChange={formik.handleChange} type="text" style="" placeholder="Nome da imagem"/>
+                        <InputText id="name" onChange={formik.handleChange} type="text" style="" placeholder="Nome da imagem" value={formik.values.name}/>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Tags: *</label>
-                        <InputText id="tags" onChange={formik.handleChange} type="text" style="" placeholder="Digite separado por virgulas"/>
+                        <InputText id="tags" onChange={formik.handleChange} type="text" style="" placeholder="Digite separado por virgulas" value={formik.values.tags}/>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Image: *</label>
@@ -90,7 +93,6 @@ const Page = () =>{
                         <Link href="/galeria">
                             <Button label="Cancelar" color="bg-red-500 hover:bg-red-400"/>
                         </Link>
-
                     </div>
                 </form>
             </section>

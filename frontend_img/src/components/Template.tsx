@@ -1,3 +1,5 @@
+import { ToastContainer } from "react-toastify";
+
 type Props = {
     children: React.ReactNode;
     loading?: boolean
@@ -13,11 +15,14 @@ export const Template = ({children, loading}: Props) =>{
                         <div className="flex items-center justify-center h-full">
                             <Loading/>
                         </div>
-                        
                     }
                     {children}
                 </div>
                 <Footer/>
+                <ToastContainer 
+                    autoClose={8000}
+                    closeOnClick={true}
+                />
             </div>
         </>
     )

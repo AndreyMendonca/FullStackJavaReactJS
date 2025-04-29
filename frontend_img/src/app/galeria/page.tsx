@@ -1,5 +1,4 @@
 'use client'
-import { Template } from "@/components";
 import { ImageCard } from "@/components/ImageCard";
 import { Image } from "@/resources/image/image.resource";
 import { useImageService } from "@/resources/image/image.service";
@@ -7,10 +6,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { InputText } from "@/components/InputText";
+import { useNotification } from "@/components/notification";
+import { ToastContainer } from "react-toastify";
+import { Template } from "@/components/Template";
 
 
 const Page = () =>{
     const useService = useImageService();
+    const { notify } = useNotification();
     const [images, setImages] = useState<Image[]>([]);
     const [query, setQuery] = useState('');
     const [extension, setExtension] = useState('');
@@ -21,6 +24,9 @@ const Page = () =>{
         const result = await useService.buscar(query, extension);
         setImages(result);
         setLoading(false);
+        if(!result.length){
+            notify("Nenhum resultado encontrato", 'warning')
+        }
     }
 
     useEffect(()=>{
