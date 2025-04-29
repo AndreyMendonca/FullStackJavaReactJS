@@ -6,16 +6,12 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useImageService } from "@/resources/image/image.service";
-import { ToastContainer, toast } from 'react-toastify';
 import { useNotification } from "@/components/notification";
+import { FormProps, formScheme, formValidationSchema } from "./formSchema";
 
-type FormProps = {
-    name: string;
-    tags: string;
-    file: any;
-}
 
-const formScheme: FormProps = {name: '', tags:'',file:''}
+
+
 
 const Page = () =>{
     const [imagePreview, setImagePreview] = useState<string>();
@@ -23,7 +19,8 @@ const Page = () =>{
     const notification = useNotification();
     const formik = useFormik<FormProps>({
         initialValues: formScheme,
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: formValidationSchema
     })
 
     async function handleSubmit(dados:FormProps){
@@ -57,10 +54,12 @@ const Page = () =>{
                     <div className="grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Nome: *</label>
                         <InputText id="name" onChange={formik.handleChange} type="text" style="" placeholder="Nome da imagem" value={formik.values.name}/>
+                        <span className="text-red-500">{formik.errors.name}</span>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Tags: *</label>
                         <InputText id="tags" onChange={formik.handleChange} type="text" style="" placeholder="Digite separado por virgulas" value={formik.values.tags}/>
+                        <span className="text-red-500">{formik.errors.tags}</span>
                     </div>
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-lg font-medium leading-6 text-gray-600">Image: *</label>
@@ -87,6 +86,7 @@ const Page = () =>{
                                 </div>
                             </div>
                         </div>
+                        <span className="text-red-500">{formik.errors.file}</span>
                     </div>
                     <div className="mt-6 flex items-center justify-end gap-x-6 md:justify-start">
                         <Button label="Salvar" color="bg-blue-500 hover:bg-blue-400" type="submit"/>
