@@ -28,7 +28,7 @@ export default function Login(){
                 const accessToken:AccessToken = await auth.authentication(credentials);
                 auth.initSession(accessToken);
                 console.log("Sessao esta valida:", auth.isSessionValid())
-                //router.push("/galeria")
+                router.push("/galeria")
             }catch(error: any){
                 const message = error?.message;
                 notification.notify(message, "error")
