@@ -1,12 +1,11 @@
 package com.fullstack.backendapi.application.users;
 
 import com.fullstack.backendapi.application.jwt.JwtService;
-import com.fullstack.backendapi.domain.AcessToken;
+import com.fullstack.backendapi.domain.AccessToken;
 import com.fullstack.backendapi.domain.entity.User;
 import com.fullstack.backendapi.domain.exception.DuplicatedTuplaException;
 import com.fullstack.backendapi.domain.service.UserService;
 import com.fullstack.backendapi.infra.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AcessToken authentication(String email, String password) {
+    public AccessToken authentication(String email, String password) {
         var user = getByEmail(email);
         if(user == null){
             return null;

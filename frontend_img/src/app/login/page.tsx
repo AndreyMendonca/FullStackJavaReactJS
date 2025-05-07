@@ -8,7 +8,7 @@ import { useState } from "react"
 import { FormLoginProps, formLoginScheme, formLoginValidationSchema } from "./formScheme"
 import { useAuth } from "@/resources/user/authentication.service"
 import { useRouter } from "next/navigation"
-import { AccessToken, UserLogin } from "@/resources/user/users.resources"
+import { AccessToken, User, UserLogin } from "@/resources/user/users.resources"
 import { useNotification } from "@/components/notification"
 
 export default function Login(){
@@ -25,8 +25,26 @@ export default function Login(){
                 password: values.password
             }
             try{
-                const accessToken:AccessToken = await auth.authentication(credentials)
-                router.push("/galeria")
+                const accessToken:AccessToken = await auth.authentication(credentials);
+                auth.initSession(accessToken);
+                console.log("Sessao esta valida:", auth.isSessionValid())
+                //router.push("/galeria")
+            }catch(error: any){
+                const message = error?.message;
+                notification.notify(message, "error")
+            }
+        }else{
+            const user: User = {
+                email: values.email, 
+                name: values.name, 
+                password: values.password
+            }
+
+            try{
+                await auth.save(user);
+                notification.notify("Success on saving user!", "success")
+                formik.resetForm();
+                setNewUserState(false)
             }catch(error: any){
                 const message = error?.message;
                 notification.notify(message, "error")
@@ -139,7 +157,11 @@ export default function Login(){
                                     type="button"
                                     label="SignUp"
                                     color="bg-red-700 hover:bg-red-500"
-                                    onClick={() => setNewUserState(true)}
+                                    onClick={() => {
+                                        setNewUserState(true)
+                                        formik.resetForm();
+                                        }
+                                    }
                                 />
                             </RenderIf>
 

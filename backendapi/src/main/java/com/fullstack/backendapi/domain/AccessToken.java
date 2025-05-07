@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AcessToken {
-    private String acessToken;
+public class AccessToken {
+    private String accessToken;
 }

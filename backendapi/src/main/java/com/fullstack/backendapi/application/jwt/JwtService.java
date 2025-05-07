@@ -1,6 +1,6 @@
 package com.fullstack.backendapi.application.jwt;
 
-import com.fullstack.backendapi.domain.AcessToken;
+import com.fullstack.backendapi.domain.AccessToken;
 import com.fullstack.backendapi.domain.entity.User;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class JwtService {
 
     private final SecretKeyGenerator keyGenerator;
 
-    public AcessToken generateToken(User user){
+    public AccessToken generateToken(User user){
 
         SecretKey key = keyGenerator.getKey();
         Date expirationDate = generateExpirationDate();
@@ -32,7 +32,7 @@ public class JwtService {
                 .expiration(expirationDate)
                 .claims(claims)
                 .compact();
-        return new AcessToken(token);
+        return new AccessToken(token);
     }
 
     private Date generateExpirationDate(){
