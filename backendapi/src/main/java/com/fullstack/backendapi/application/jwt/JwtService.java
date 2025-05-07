@@ -2,6 +2,7 @@ package com.fullstack.backendapi.application.jwt;
 
 import com.fullstack.backendapi.domain.AccessToken;
 import com.fullstack.backendapi.domain.entity.User;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,20 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("name", user.getName());
         return claims;
+    }
+
+    public String getEmailFromToken(String tokenJwt){
+        try{
+            return Jwts
+                    .parser()
+                    .verifyWith(keyGenerator.getKey())
+                    .build()
+                    .parseSignedClaims(tokenJwt)
+                    .getPayload()
+                    .getSubject();
+        }catch (JwtException e){
+            throw new InvalidTokenException(e.getMessage());
+        }
+
     }
 }
