@@ -1,14 +1,28 @@
 "use client"
-
 import { Button } from "@/components/Button"
 import { InputText } from "@/components/InputText"
 import { RenderIf } from "@/components/RenderIf"
 import { Template } from "@/components/Template"
+import { useFormik } from "formik"
 import { useState } from "react"
+import { FormLoginProps, formLoginScheme, formLoginValidationSchema } from "./formScheme"
 
 export default function Login(){
 
     const [newUserState, setNewUserState] = useState<boolean>(false);
+
+    async function onSubmit(values: FormLoginProps){
+        console.log('oi')
+        console.log(values)
+    }
+
+    const formik = useFormik<FormLoginProps>({
+        initialValues: formLoginScheme,
+        validationSchema: formLoginValidationSchema,
+        onSubmit: onSubmit
+    })
+
+
 
     return (
         <Template>
@@ -19,7 +33,7 @@ export default function Login(){
                     </h2>
                 </div>
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-2">
+                    <form onSubmit={formik.handleSubmit} className="space-y-2">
                         <RenderIf condition={newUserState}>
                             <div>
                                 <label className="block text-sm font-medium leading-6 text-gray-900">Name:</label>
@@ -29,7 +43,11 @@ export default function Login(){
                                     type="text"
                                     style="w-full"
                                     id="name"
+                                    name="name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
                                 />
+                                <span className="text-red-500">{formik.errors.name}</span>
                             </div>
                         </RenderIf>
 
@@ -41,7 +59,11 @@ export default function Login(){
                                 type="email"
                                 style="w-full"
                                 id="email"
+                                name="email"
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
                             />
+                            <span className="text-red-500">{formik.errors.email}</span>
                         </div>
                         <div>
                             <label className="block text-sm font-medium leading-6 text-gray-900">Password:</label>
@@ -51,7 +73,11 @@ export default function Login(){
                                 type="password"
                                 style="w-full"
                                 id="password"
+                                name="password"
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
                             />
+                            <span className="text-red-500">{formik.errors.password}</span>
                         </div>
                         <RenderIf condition={newUserState}>
                             <div>
@@ -62,7 +88,11 @@ export default function Login(){
                                     type="password"
                                     style="w-full"
                                     id="passwordMatch"
+                                    name="passwordMatch"
+                                    value={formik.values.passwordMatch}
+                                    onChange={formik.handleChange}
                                 />
+                                <span className="text-red-500">{formik.errors.passwordMatch}</span>
                             </div>
                         </RenderIf> 
                         <div>
@@ -81,6 +111,7 @@ export default function Login(){
                             </RenderIf>
                             
                             <RenderIf condition={!newUserState}>
+
                                 <Button
                                     type="submit"
                                     label="Login"
@@ -96,7 +127,6 @@ export default function Login(){
 
                         </div>
                     </form>
-
                 </div>
             </div>
         </Template>
