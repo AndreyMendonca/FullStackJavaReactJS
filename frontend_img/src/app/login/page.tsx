@@ -6,14 +6,32 @@ import { Template } from "@/components/Template"
 import { useFormik } from "formik"
 import { useState } from "react"
 import { FormLoginProps, formLoginScheme, formLoginValidationSchema } from "./formScheme"
+import { useAuth } from "@/resources/user/authentication.service"
+import { useRouter } from "next/navigation"
+import { AccessToken, UserLogin } from "@/resources/user/users.resources"
+import { useNotification } from "@/components/notification"
 
 export default function Login(){
 
     const [newUserState, setNewUserState] = useState<boolean>(false);
+    const auth = useAuth();
+    const notification = useNotification();
+    const router = useRouter();
 
     async function onSubmit(values: FormLoginProps){
-        console.log('oi')
-        console.log(values)
+        if(!newUserState){
+            const credentials: UserLogin = {
+                email: values.email,
+                password: values.password
+            }
+            try{
+                const accessToken:AccessToken = await auth.authentication(credentials)
+                router.push("/galeria")
+            }catch(error: any){
+                const message = error?.message;
+                notification.notify(message, "error")
+            }
+        }
     }
 
     const formik = useFormik<FormLoginProps>({
