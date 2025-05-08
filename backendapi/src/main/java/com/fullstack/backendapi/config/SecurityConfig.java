@@ -1,5 +1,8 @@
 package com.fullstack.backendapi.config;
 
+import com.fullstack.backendapi.application.jwt.JwtService;
+import com.fullstack.backendapi.config.filter.JwtFilter;
+import com.fullstack.backendapi.domain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,19 +21,26 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     @Bean
+    public JwtFilter jwtFilter(JwtService jwtService, UserService userService){
+        return new JwtFilter(jwtService, userService);
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests( auth ->{
                     auth.requestMatchers("v1/users/**").permitAll();
+                    auth.requestMatchers("v1/images/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
