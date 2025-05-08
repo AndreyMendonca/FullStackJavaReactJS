@@ -12,7 +12,7 @@ import { Template } from "@/components/Template";
 import { AuhenticatedPage } from "@/components/AuthenticatedPage";
 
 
-const Page = () =>{
+const GaleriaPage = () =>{
     const useService = useImageService();
     const { notify } = useNotification();
     const [images, setImages] = useState<Image[]>([]);
@@ -83,4 +83,4 @@ const Page = () =>{
         
     )
 }
-export default Page;
+export default GaleriaPage;
