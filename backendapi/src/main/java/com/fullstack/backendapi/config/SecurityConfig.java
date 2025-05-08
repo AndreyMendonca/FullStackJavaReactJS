@@ -5,6 +5,7 @@ import com.fullstack.backendapi.config.filter.JwtFilter;
 import com.fullstack.backendapi.domain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests( auth ->{
                     auth.requestMatchers("v1/users/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"v1/images/**").permitAll();
                     auth.requestMatchers("v1/images/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
